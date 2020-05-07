@@ -1,0 +1,1 @@
+**Docker-in-Docker image with Maven and Java to use in CI/CD process**

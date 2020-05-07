@@ -1,14 +1,14 @@
 FROM docker:stable
-RUN apk update
-RUN apk --no-cache add openjdk11 --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
-ENV JAVA_HOME /usr/lib/jvm/default-jvm
 
-RUN apk add --no-cache curl tar bash procps nss
-
-ARG MAVEN_VERSION=3.6.0
+ARG JAVA_VERSION=11
+ARG MAVEN_VERSION=3.6.3
 ARG USER_HOME_DIR="/root"
-ARG SHA=fae9c12b570c3ba18116a4e26ea524b29f7279c17cbaadc3326ca72927368924d9131d11b9e851b8dc9162228b6fdea955446be41207a5cfc61283dd8a561d2f
+ARG SHA=c35a1803a6e70a126e80b2b3ae33eed961f83ed74d18fcd16909b2d44d7dada3203f1ffe726c17ef8dcca2dcaa9fca676987befeadc9b9f759967a8cb77181c0
 ARG BASE_URL=https://apache.osuosl.org/maven/maven-3/${MAVEN_VERSION}/binaries
+
+RUN apk update
+RUN apk add --no-cache "openjdk$JAVA_VERSION" --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
+RUN apk add --no-cache curl tar bash procps nss
 
 RUN mkdir -p /usr/share/maven /usr/share/maven/ref \
   && curl -fsSL -o /tmp/apache-maven.tar.gz ${BASE_URL}/apache-maven-${MAVEN_VERSION}-bin.tar.gz \
@@ -19,3 +19,4 @@ RUN mkdir -p /usr/share/maven /usr/share/maven/ref \
 
 ENV MAVEN_HOME /usr/share/maven
 ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
+ENV JAVA_HOME /usr/lib/jvm/default-jvm
